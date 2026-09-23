@@ -146,26 +146,27 @@ async function carregarNoticias() {
 }
 
 function renderizarDestaque(noticias) {
-  const titulo = document.querySelector("#destaqueTitulo");
-  const resumo = document.querySelector("#destaqueResumo");
-  const btn = document.querySelector("#btnLerDestaque");
+function renderizarDestaque(noticias){
+  const titulo=document.querySelector("#destaqueTitulo"),
+        resumo=document.querySelector("#destaqueResumo"),
+        btn=document.querySelector("#btnLerDestaque");
 
-  if (!noticias?.length) {
-    titulo.textContent = "Nenhuma notícia encontrada";
-    resumo.textContent = "Verifique o backend ou o status de publicação no Notion.";
-    btn.disabled = true;
-    btn.onclick = null;
+  // Remove a animação de carregamento assim que houver retorno
+  titulo.classList.remove("skeleton", "skeleton-title");
+  resumo.classList.remove("skeleton", "skeleton-text");
+
+  if(!noticias?.length){
+    titulo.textContent="Nenhuma notícia encontrada";
+    resumo.textContent="Verifique o backend ou o status de publicação no Notion.";
+    btn.disabled=true;
+    btn.onclick=null;
     return;
   }
-
-  const destaque = noticias.find(n => n.destaque) || noticias[0];
-
-  titulo.textContent = destaque.titulo;
-  resumo.textContent = formatarResumo(destaque.resumo);
-  btn.disabled = false;
-  btn.onclick = () => {
-    location.href = `noticia.html?id=${encodeURIComponent(destaque.id)}`;
-  };
+  const destaque=noticias.find(n=>n.destaque)||noticias[0];
+  titulo.textContent=destaque.titulo;
+  resumo.textContent=formatarResumo(destaque.resumo);
+  btn.disabled=false;
+  btn.onclick=()=>location.href=`noticia.html?id=${encodeURIComponent(destaque.id)}`;
 }
 
 function criarCardNoticia(noticia) {
@@ -268,23 +269,23 @@ function configurarBusca(noticias) {
   });
 }
 
-async function iniciar() {
-  try {
-    const noticias = await carregarNoticias();
-
+async function iniciar(){
+  try{
+    const noticias=await carregarNoticias();
     renderizarDestaque(noticias);
     renderizarLista(noticias);
     configurarBusca(noticias);
-  } catch (err) {
-    console.error("Erro na requisição:", err);
+  }catch(err){
+    console.error("Erro na requisição:",err);
+    const titulo=document.querySelector("#destaqueTitulo"),
+          resumo=document.querySelector("#destaqueResumo");
+    
+    titulo.classList.remove("skeleton", "skeleton-title");
+    resumo.classList.remove("skeleton", "skeleton-text");
 
-    document.querySelector("#destaqueTitulo").textContent =
-      "Erro ao carregar notícias";
-
-    document.querySelector("#destaqueResumo").textContent =
-      "Verifique a URL do backend (Apps Script), permissões de acesso ou CORS e tente novamente.";
-
-    document.querySelector("#btnLerDestaque").disabled = true;
+    titulo.textContent="Erro ao carregar notícias";
+    resumo.textContent="Verifique sua conexão com a internet e tente novamente.";
+    document.querySelector("#btnLerDestaque").disabled=true;
   }
 }
 
