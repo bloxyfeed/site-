@@ -283,3 +283,45 @@ header h1 .easter-egg-title {
   from { transform: scale(0.5); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+/* Regras do Skeleton Loading */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--border-color);
+  border-radius: var(--radius-sm);
+  min-height: 1.2rem;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.08) 20%,
+    rgba(255, 255, 255, 0.2) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: skeletonShimmer 1.5s infinite;
+}
+
+.skeleton-title {
+  height: 2.25rem;
+  width: 75%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-text {
+  height: 4.5rem;
+  width: 90%;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
